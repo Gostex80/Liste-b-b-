@@ -1,1 +1,115 @@
 # Liste-b-b-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Checklist Bébé & Moi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    font-family: Arial;
+    background: #f4f6fb;
+    padding: 15px;
+}
+h1 {
+    text-align: center;
+}
+.section {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+label {
+    display: block;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background: #6c8cff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}
+.progress {
+    margin: 10px 0;
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🍼 Checklist Bébé & Moi</h1>
+
+<div class="progress" id="progress"></div>
+
+<div class="section" id="bebe"></div>
+<div class="section" id="moi"></div>
+
+<script>
+const data = {
+    "Bébé": [
+        "Trousse de soins","Tétine","Thermomètre bain + toilette",
+        "Coupe ongle / mouche bébé","Peigne / brosse",
+        "Compresse / coton / liniment","Sérum physiologique",
+        "Savon corps cheveux","Crème change + hydratante",
+        "Gants de toilette + serviette","Couches Taille 0 / 1",
+        "Matelas à langer + housse","Nid d’ange","Gigoteuse",
+        "Commode / plan à langer","Porte bébé","Bavoirs",
+        "Babyphone","Veilleuse","Mobile musical",
+        "Hochet / jouets","Protège matelas","Draps housse",
+        "Portique en bois","Décorations","Lit évolutif",
+        "Parc","Miroir voiture","Lit pliant"
+    ],
+    "Moi": [
+        "Pyjama + tee-shirts allaitement","Gel toilette intime",
+        "Lingettes","Soutien-gorge allaitement",
+        "Coussinets allaitement","Crème mamelons (lanoline)",
+        "Argile crème","Compresse","Bouteille périnéale",
+        "Brumisateur","Tire-lait (à louer)"
+    ]
+};
+
+function render() {
+    let total = 0, checked = 0;
+
+    Object.keys(data).forEach(section => {
+        const container = document.getElementById(section.toLowerCase());
+        container.innerHTML = "<h2>"+section+"</h2>";
+
+        data[section].forEach((item, i) => {
+            const id = section + i;
+            const isChecked = localStorage.getItem(id) === "true";
+
+            if(isChecked) checked++;
+            total++;
+
+            container.innerHTML += `
+                <label>
+                    <input type="checkbox" ${isChecked ? "checked":""}
+                    onchange="toggle('${id}', this.checked)">
+                    ${item}
+                </label>
+            `;
+        });
+    });
+
+    document.getElementById("progress").innerText =
+        "Progression : " + checked + " / " + total;
+}
+
+function toggle(id, value) {
+    localStorage.setItem(id, value);
+    render();
+}
+
+render();
+</script>
+
+</body>
+</html>
